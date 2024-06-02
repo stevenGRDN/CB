@@ -42,15 +42,15 @@ for(let i=1;i <= 40; i++){
 
 // ---- Adding scene 2 imgs -----
 
-fpIMG3Div.innerHTML += `<img class="fp-img-3" src="./scene2/Race Road.png" alt="">`
-for(let i=0; i < 26; i++){
-  if(i == 0) fpIMG3Div.innerHTML += `<img fetchpriority="high" class="fp-img-3-anim fp3-block" src="./scene3/v1000${i}-min.png" alt="">`
-  if(i <= 9 && i!= 0) fpIMG3Div.innerHTML += `<img fetchpriority="high" class="fp-img-3-anim" src="./scene3/v1000${i}-min.png" alt="">`
-  if(i > 9) fpIMG3Div.innerHTML += `<img fetchpriority="high" class="fp-img-3-anim" src="./scene3/v100${i}-min.png" alt="">`
+// fpIMG3Div.innerHTML += `<img class="fp-img-3" src="./scene2/Race Road.png" alt="">`
+// for(let i=0; i < 26; i++){
+//   if(i == 0) fpIMG3Div.innerHTML += `<img fetchpriority="high" class="fp-img-3-anim fp3-block" src="./scene3/v1000${i}-min.png" alt="">`
+//   if(i <= 9 && i!= 0) fpIMG3Div.innerHTML += `<img fetchpriority="high" class="fp-img-3-anim" src="./scene3/v1000${i}-min.png" alt="">`
+//   if(i > 9) fpIMG3Div.innerHTML += `<img fetchpriority="high" class="fp-img-3-anim" src="./scene3/v100${i}-min.png" alt="">`
   
   
-}
-fpIMG3Div.innerHTML += `<img class="fp-img-3" src="./scene2/Race Road-1.png" alt="">`
+// }
+// fpIMG3Div.innerHTML += `<img class="fp-img-3" src="./scene2/Race Road-1.png" alt="">`
 
 let loadingDiv = document.querySelector('.loading');
 let allIMG = document.querySelectorAll('.s1-img');
@@ -378,9 +378,43 @@ document.addEventListener('scroll', ()=>{
     allFFPIMGs[frameDisplayed].style.display = 'block';
   }
 
-  if(observedSP){
-    console.log("Scroll Top: " + document.documentElement.scrollTop + " & Scroll Height: " + document.documentElement.scrollHeight + " & Client Height: " + document.documentElement.clientHeight);
-    console.log(`${firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25 - (document.documentElement.clientHeight * 2)}`);
+  if(observedSthPAdd){
+    // console.log("Scroll Top: " + document.documentElement.scrollTop + " & Scroll Height: " + document.documentElement.scrollHeight + " & Client Height: " + document.documentElement.clientHeight);
+    // console.log(`${firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25 - (document.documentElement.clientHeight * 2)}`);
+    // This is the value we get to
+    
+    // console.log(`${firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25}`);
+    // This is the value start with
+
+    let spaStartScroll = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25;
+    let spaEndScroll = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25 - (document.documentElement.clientHeight * 2);
+    let spaPercentage = (document.documentElement.scrollTop - spaStartScroll) / (spaEndScroll - spaStartScroll);
+    if (spaPercentage < 0) spaPercentage = 0;
+    if (spaPercentage > 1) spaPercentage = 1;
+    console.log(spaPercentage);
+
+    sCircles.forEach(circle =>{
+      let pointAtLength = sthpPathLength - (parseInt(circle.getAttribute('randomDistance')) + (spaPercentage * 0.8 * sthpPathLength));
+      if(circle.classList[0] == 'sc-red-2' && pointAtLength < 350) {scene7Writing.style.opacity = 1;}
+      else if(circle.classList[0] == 'sc-red-2' && pointAtLength > 350){scene7Writing.style.opacity = 0;}
+      if(pointAtLength < 0) pointAtLength = (sthpPathLength * 2) - (parseInt(circle.getAttribute('randomDistance')) + (spaPercentage * 0.8 * sthpPathLength));
+      circle.setAttribute('transform', `translate(${sthpPath.getPointAtLength(pointAtLength).x}, ${sthpPath.getPointAtLength(pointAtLength).y})`);
+      // circle.setAttribute('transform', `0 0`);
+    });
+  }
+
+  if(svthPageObserve){
+    let svthPageStart = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 3.15) - 1.25;
+    let svthPageEnd = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight + seventhPage.scrollHeight - (document.documentElement.clientHeight * 3.15) - 1.25;
+    // console.log(document.documentElement.scrollTop + " " + svthPageStart + " " + (document.documentElement.scrollHeight - document.documentElement.clientHeight));
+    // console.log(document.documentElement.scrollTop + " " + svthPageStart + " " + svthPageEnd);
+    let svthPagePerc = (document.documentElement.scrollTop - svthPageStart) / (svthPageEnd - svthPageStart);
+    console.log(svthPagePerc);
+    cbArrow2.style.rotate = `-${-20 + (svthPagePerc * 40)}deg`;
+  }
+
+  if(observedSvthPageAdd){
+
   }
 
 
@@ -395,6 +429,7 @@ let thirdPage = document.querySelector('.third-page');
 let fourthPage = document.querySelector('.fourth-page');
 let fifthPage = document.querySelector('.fifth-page');
 let sixthPage = document.querySelector('.sixth-page');
+let seventhPage = document.querySelector('.seventh-page');
 
 
 
@@ -412,10 +447,13 @@ let fp4BlurContainer = document.querySelector('.fp-4-blur-container');
 let fp4BlurOverlay = document.querySelector('.fp-4-blur-overlay');
   
 let observedFP4 = false;
+let observedFP4T0 = false;
 let observingFP4 = false;
 
+let fp1Writing = document.querySelector('.fp-img-1-writing');
 let fpIMG2Div = document.querySelector('.fp-img-2-div');
 let fp3IMGs = [...document.querySelectorAll('.fp-img-3-anim')];
+let fp3Vid = document.querySelector('.fp-vid-3');
 let fp4Center = document.querySelector('.fp-4-center');
 let fp4Driver = document.querySelector('.fp-img-4-layer');
 // we've made fpIMG3Div at the top where we insert the images
@@ -443,16 +481,31 @@ let sCircles = document.querySelectorAll('.scircle');
 let sthpPath = document.querySelector('.path');
 let sthpPathLength = sthpPath.getTotalLength();
 let randomCircleDistance = 0;
-let observedSP = false;
+// let observedSP = false;
 
 sCircles.forEach(circle =>{
   randomCircleDistance += (Math.random() * 100) + 20;
   circle.setAttribute('randomDistance', randomCircleDistance);
-  // circle.setAttribute('transform', `translate(${sthpPath.getPointAtLength(sthpPathLength - randomCircleDistance).x}, ${sthpPath.getPointAtLength(sthpPathLength - randomCircleDistance).y})`);
+  circle.setAttribute('transform', `translate(${sthpPath.getPointAtLength(sthpPathLength - randomCircleDistance).x}, ${sthpPath.getPointAtLength(sthpPathLength - randomCircleDistance).y})`);
 })
 
 
+let scene7Writing = document.querySelector('.sthp-img-writing');
+let observedSvthPage = false;
+let cbArrow2 = document.querySelector('.CB-Arrow-2');
+let svthPageAdd = document.querySelector('.svth-page-add');
+let observedSvthPageAdd = false;
+
 // ---- Observes ----
+
+let fp1Observe = new IntersectionObserver(entries =>{
+  if(entries[0].isIntersecting){
+    entries[0].target.style.opacity = 1;
+  }
+  else if(!entries[0].isIntersecting){
+    entries[0].target.style.opacity = 0;
+  }
+})
 
 
 let fp2Observe = new IntersectionObserver(entries =>{
@@ -468,6 +521,7 @@ let fp3Observe = new IntersectionObserver(entries => {
   // if(fp3Interval != undefined) clearInterval(fp3Interval);
   if (entries[0].isIntersecting) {
     observedFP3 = true;
+    fp3Vid.play();
   }
   else if(!entries[0].isIntersecting && animRunning == false){
     observedFP3 = false;
@@ -479,9 +533,19 @@ let fp3Observe = new IntersectionObserver(entries => {
   }
 }, { threshold: 0.8 });
 
+let fp4ObserveT0 = new IntersectionObserver(entries =>{
+  if(entries[0].isIntersecting){
+    observedFP4T0 = true;
+  }
+  else if(!entries[0].isIntersecting){
+    observedFP4T0 = false;
+  }
+}, {threshold: 0})
+
 let fp4Observe = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting){
     observedFP4 = true;
+    ffpIMGContainer.style.top = `50vh`;
   }
 
   if(!entries[0].isIntersecting){
@@ -492,20 +556,23 @@ let fp4Observe = new IntersectionObserver(entries =>{
 
 let observedFFP = false;
 let observedSthPage = false;
+let observedSthPAdd = false;
 
 let ffpPageObserve = new IntersectionObserver(entries =>{
+  if(entries[0].isIntersecting) observedFFP = true;
+
   if(entries[0].isIntersecting && !observedSthPage){
     ffpIMGContainer.style.position = `fixed`;
     // ffpIMGContainer.style.left = `calc(50vw - ${getScrollbarWidth()}px)`;
     ffpIMGContainer.style.animation = `ffpContainer 0.4s ease 0.2s both`;
 
-    observedFFP = true;
+    // observedFFP = true;
     // ffp.addEventListener('scroll', ()=>{
       //   console.log(ffp.scrollTop);
       //   console.log("bruh");
       // })
-    }
-    else if(!entries[0].isIntersecting){
+  }
+  else if(!entries[0].isIntersecting){
     observedFFP = false;
     ffpIMGContainer.style.position = `absolute`;
     ffpIMGContainer.style.animation = ``;
@@ -521,38 +588,84 @@ let sthPageObserve = new IntersectionObserver(entries => {
     ffpIMGContainer.style.top = `calc(100% - 50vh)`;
     // ffpIMGContainer.style.left = `calc(50vw)`;
   }
-  else if(!entries[0].isIntersecting){
+  else if(!entries[0].isIntersecting && observedFFP){
     observedSthPage = false;
     ffpIMGContainer.style.position = `fixed`;
     ffpIMGContainer.style.top = `50vh`;
     // ffpIMGContainer.style.left = `calc(50vw - ${getScrollbarWidth()}px)`;
   }
+
+  if(!entries[0].isIntersecting) observedSthPage = false;
 }, {threshold: 0})
 
 let sthPageAddObserve = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting){
     sthpTrack.style.position = `fixed`;
-    observedSP = true;
+    sthpTrack.style.top = `50vh`;
+
+    observedSthPAdd = true;
     // console.log(sthpPathLength);
     // console.log(document.querySelector('.path').getPointAtLength(20));
     // sCBlue1.setAttribute('transform', `translate(${sthpPath.getPointAtLength(sthpPathLength - 100).x}, ${sthpPath.getPointAtLength(sthpPathLength - 100).y})`);
     // console.log(sCircles);
   }
   else if(!entries[0].isIntersecting){
-    observedSP = false;
+    observedSthPAdd = false;
+    // observedSP = false;
     sthpTrack.style.position = `absolute`;
+  }
+} , {threshold: 0})
+
+let svthPageObserve = new IntersectionObserver(entries =>{
+  if(entries[0].isIntersecting){
+    svthPageObserve = true;
+    sthpTrack.style.position = `absolute`;
+    sthpTrack.style.top = `calc(100% - 50vh)`;
+  }
+  else if(!entries[0].isIntersecting){
+    svthPageObserve = false;
+  }
+  
+  if(!entries[0].isIntersecting && observedSthPAdd){
+    sthpTrack.style.position = `fixed`;
+    sthpTrack.style.top = `50vh`;
+  }
+    
+})
+
+let svthPageAddObserve = new IntersectionObserver(entries =>{
+  if(entries[0].isIntersecting){
+    // console.log("KAMON MEN");
+    observedSvthPageAdd = true;
+    
+    // window.location.hash = 'first-page';
+    // window.history.pushState(null, null, '');
+    
+    // firstPage.scrollIntoView({ behavior: 'smooth' });
+    // firstPage.scrollIntoView({ behavior: 'smooth' });
+    // window.location.hash = 'first-page';
+    // document.querySelector(window.location.hash).scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth' });
+    
+  }
+  else if(!entries[0].isIntersecting){
+    observedSvthPageAdd = false;
+    // window.scrollTo({top: 0, behavior: 'smooth' });
   }
 })
 
 
-
+fp1Observe.observe(fp1Writing);
 fp2Observe.observe(fpIMG2Div);
 fp3Observe.observe(fpIMG3Div);
 fp4Observe.observe(fp4Center);
+fp4ObserveT0.observe(fourthPage);
 
 ffpPageObserve.observe(ffpPage);
 sthPageObserve.observe(sixthPage);
 sthPageAddObserve.observe(sthPageAdd);
+svthPageObserve.observe(seventhPage);
+svthPageAddObserve.observe(svthPageAdd);
 
 
 
@@ -580,3 +693,12 @@ function getScrollbarWidth() {
   return scrollbarWidth;
 }
 console.log("Scrollbar Width " + getScrollbarWidth());
+
+
+// window.onload = function() {
+//   if (window.location.hash) {
+//       setTimeout(() => {
+//           document.querySelector(window.location.hash).scrollIntoView({ behavior: 'smooth' });
+//       }, 0);
+//   }
+// };
