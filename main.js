@@ -378,6 +378,10 @@ document.addEventListener('scroll', ()=>{
     allFFPIMGs[frameDisplayed].style.display = 'block';
   }
 
+
+  // ---------------
+
+
   if(observedSthPAdd){
     // console.log("Scroll Top: " + document.documentElement.scrollTop + " & Scroll Height: " + document.documentElement.scrollHeight + " & Client Height: " + document.documentElement.clientHeight);
     // console.log(`${firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25 - (document.documentElement.clientHeight * 2)}`);
@@ -391,7 +395,7 @@ document.addEventListener('scroll', ()=>{
     let spaPercentage = (document.documentElement.scrollTop - spaStartScroll) / (spaEndScroll - spaStartScroll);
     if (spaPercentage < 0) spaPercentage = 0;
     if (spaPercentage > 1) spaPercentage = 1;
-    console.log(spaPercentage);
+    // console.log(spaPercentage);
 
     sCircles.forEach(circle =>{
       let pointAtLength = sthpPathLength - (parseInt(circle.getAttribute('randomDistance')) + (spaPercentage * 0.8 * sthpPathLength));
@@ -403,19 +407,227 @@ document.addEventListener('scroll', ()=>{
     });
   }
 
-  if(svthPageObserve){
-    let svthPageStart = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 3.15) - 1.25;
-    let svthPageEnd = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight + seventhPage.scrollHeight - (document.documentElement.clientHeight * 3.15) - 1.25;
-    // console.log(document.documentElement.scrollTop + " " + svthPageStart + " " + (document.documentElement.scrollHeight - document.documentElement.clientHeight));
-    // console.log(document.documentElement.scrollTop + " " + svthPageStart + " " + svthPageEnd);
-    let svthPagePerc = (document.documentElement.scrollTop - svthPageStart) / (svthPageEnd - svthPageStart);
-    console.log(svthPagePerc);
-    cbArrow2.style.rotate = `-${-20 + (svthPagePerc * 40)}deg`;
+
+  // ---------------
+
+
+  if(observedSvthPAdd1){
+    let svthPA1Start = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 2.15) - 1.25;
+    let svthPA1End = firstPage.scrollHeight + secondPage.scrollHeight + thirdPage.scrollHeight + fourthPage.scrollHeight + fifthPage.scrollHeight + sixthPage.scrollHeight - (document.documentElement.clientHeight * 1.15) - 1.25;
+    let svthPerc = (document.documentElement.scrollTop - svthPA1Start) / (svthPA1End - svthPA1Start);
+    let svthCarPerc  = svthPerc;
+    console.log(svthPerc);
+
+    if(svthCarPerc > 1) svthCarPerc = 1;
+    if(svthCarPerc < 0) svthCarPerc = 0;
+  
+    svthCarU.style.opacity = svthCarPerc;
+    svthCarU.style.translate = `${100 - (svthCarPerc * 125)}% -32%`;
+    svthCarB.style.translate = `${100 - (svthCarPerc * 125)}% -32%`;
+
+    // if(svthPerc > 1 && svthPerc < 2){
+    if(svthPerc > 1){
+      svthContainer.style.translate = `${-100 + ((svthPerc - 1) * 100)}% -50%`;
+      // svthBlurredIMG.forEach(img=> img.style.opacity = `${svthPerc - 1}`);
+      // svthUnblurredIMG.forEach(img=> img.style.opacity = `${2 - svthPerc}`);
+      // Decided that it's better to blur it later on so people can view the arena for a bit
+    }
+    else if(svthPerc < 1){
+      svthContainer.style.translate = `-100% -50%`;
+    }
+    else if(svthPerc > 2){
+      // svthContainer.style.translate = `0% -50%`;
+    }
+
+
+    if(svthPerc > 1.3 && svthPerc < 2){
+      svthBlurredIMG.forEach(img=> img.style.opacity = `${(svthPerc - 1.3) / (2-1.3)}`);
+      svthUnblurredIMG.forEach(img=> img.style.opacity = `${1 - (svthPerc - 1.3) / (2-1.3)}`);
+
+      svthCarB.style.opacity = `${(svthPerc - 1.3) / (2-1.3)}`;
+      svthCarU.style.opacity = `${1 - (svthPerc - 1.8) / (2-1.8)}`;
+      // we remove the opacity of the unblurred car later on so the car isn't see-through
+    }
+    else if(svthPerc < 1.3 && svthPerc > 1){
+      svthBlurredIMG.forEach(img => img.style.opacity = `0`);
+      svthUnblurredIMG.forEach(img => img.style.opacity = `1`);
+      svthCarB.style.opacity = `0`;
+      svthCarU.style.opacity = `1`;
+    }
+    else if(svthPerc >= 2){
+      svthBlurredIMG.forEach(img => img.style.opacity = `1`);
+      svthUnblurredIMG.forEach(img => img.style.opacity = `0`);
+      svthCarB.style.opacity = `1`;
+      svthCarU.style.opacity = `0`;
+    }
+
+    if(svthPerc >= 2){
+      svthIMGArenaBlur.style.translate = `${-(svthPerc - 2) * 77.15}% -55%`;
+      svthIMGArenaUnblur.style.translate = `${-(svthPerc - 2) * 77.15}% -55%`;
+      // Translating the arena
+    }
+    if(svthPerc < 2){
+      svthIMGArenaBlur.style.translate = `0% -55%`;
+      svthIMGArenaUnblur.style.translate = `0% -55%`;
+    }
+      
+    // Displaying the bubbles
+    // Displaying Bubble 1
+    if(svthPerc >= 2.8) svthSVG1Gs[0].style.opacity = `${(svthPerc - 2.8) * 15}`;
+    if(svthPerc < 2.8) svthSVG1Gs[0].style.opacity = `0`;
+    
+    if(svthPerc >= 2.85) svthSVG1Gs[1].style.opacity = `${(svthPerc - 2.85) * 15}`;
+    if(svthPerc < 2.85) svthSVG1Gs[1].style.opacity = `0`;
+    
+    if(svthPerc >= 2.9) svthSVG1Gs[2].style.opacity = `${(svthPerc - 2.9) * 15}`;
+    if(svthPerc < 2.9) svthSVG1Gs[2].style.opacity = `0`;
+    
+    if(svthPerc >= 2.95) svthSVG1Gs[3].style.opacity = `${(svthPerc - 2.95) * 15}`;
+    if(svthPerc < 2.95) svthSVG1Gs[3].style.opacity = `0`;
+    
+    if(svthPerc >= 2.8 && svthPerc <= 4.1) svthSVG1Gs.forEach(svg =>{if(parseInt(svg.style.opacity) > 1) svg.style.opacity = 1});
+    // Think it's better if we do a for each in a condition for better performance?
+    
+    // Displaying Bubble 2 & removing bubble1
+    if(svthPerc >= 3.95) svthSVG1Group.style.opacity = `${1 - ((svthPerc - 3.95) * 15)}`;
+    if(parseInt(svthSVG1Group.style.opacity) < 0) svthSVG1Group.style.opacity = 0;
+    if(svthPerc < 3.95) svthSVG1Group.style.opacity = `1`;
+
+    if(svthPerc >= 4) svthSVG2Gs[0].style.opacity = `${(svthPerc - 4) * 15}`;
+    if(svthPerc < 4) svthSVG2Gs[0].style.opacity = `0`;
+
+    if(svthPerc >= 4.05) svthSVG2Gs[1].style.opacity = `${(svthPerc - 4.05) * 15}`;
+    if(svthPerc < 4.05) svthSVG2Gs[1].style.opacity = `0`;
+
+    if(svthPerc >= 4.1) svthSVG2Gs[2].style.opacity = `${(svthPerc - 4.1) * 15}`;
+    if(svthPerc < 4.1) svthSVG2Gs[2].style.opacity = `0`;
+
+    if(svthPerc >= 4.15) svthSVG2Gs[3].style.opacity = `${(svthPerc - 4.15) * 15}`;
+    if(svthPerc < 4.15) svthSVG2Gs[3].style.opacity = `0`;
+
+    svthSVG2Gs.forEach(svg =>{if(parseInt(svg.style.opacity) > 1) svg.style.opacity = 1});
+
+    // Displaying Bubble 3 & removing bubble2
+    if(svthPerc >= 4.95) svthSVG2Group.style.opacity = `${1 - ((svthPerc - 4.95) * 15)}`;
+    if(parseInt(svthSVG2Group.style.opacity) < 0) svthSVG2Group.style.opacity = 0;
+    if(svthPerc < 4.95) svthSVG2Group.style.opacity = `1`;
+
+    if(svthPerc >= 5) svthSVG3Gs[0].style.opacity = `${(svthPerc - 5) * 15}`;
+    if(svthPerc < 5) svthSVG3Gs[0].style.opacity = `0`;
+
+    if(svthPerc >= 5.05) svthSVG3Gs[1].style.opacity = `${(svthPerc - 5.05) * 15}`;
+    if(svthPerc < 5.05) svthSVG3Gs[1].style.opacity = `0`;
+
+    if(svthPerc >= 5.1) svthSVG3Gs[2].style.opacity = `${(svthPerc - 5.1) * 15}`;
+    if(svthPerc < 5.1) svthSVG3Gs[2].style.opacity = `0`;
+
+    if(svthPerc >= 5.15) svthSVG3Gs[3].style.opacity = `${(svthPerc - 5.15) * 15}`;
+    if(svthPerc < 5.15) svthSVG3Gs[3].style.opacity = `0`;
+
+    svthSVG3Gs.forEach(svg =>{if(parseInt(svg.style.opacity) > 1) svg.style.opacity = 1});
+
+    // Displaying Bubble 4 & removing bubble3
+    if(svthPerc >= 5.95) svthSVG3Group.style.opacity = `${1 - ((svthPerc - 5.95) * 15)}`;
+    if(parseInt(svthSVG3Group.style.opacity) < 0) svthSVG3Group.style.opacity = 0;
+    if(svthPerc < 5.95) svthSVG3Group.style.opacity = `1`;
+
+    if(svthPerc >= 6) svthSVG4Gs[0].style.opacity = `${(svthPerc - 6) * 15}`;
+    if(svthPerc < 6) svthSVG4Gs[0].style.opacity = `0`;
+
+    if(svthPerc >= 6.05) svthSVG4Gs[1].style.opacity = `${(svthPerc - 6.05) * 15}`;
+    if(svthPerc < 6.05) svthSVG4Gs[1].style.opacity = `0`;
+
+    if(svthPerc >= 6.1) svthSVG4Gs[2].style.opacity = `${(svthPerc - 6.1) * 15}`;
+    if(svthPerc < 6.1) svthSVG4Gs[2].style.opacity = `0`;
+
+    if(svthPerc >= 6.15) svthSVG4Gs[3].style.opacity = `${(svthPerc - 6.15) * 15}`;
+    if(svthPerc < 6.15) svthSVG4Gs[3].style.opacity = `0`;
+
+    svthSVG4Gs.forEach(svg =>{if(parseInt(svg.style.opacity) > 1) svg.style.opacity = 1});
+
+    // Displaying Bubble 5 & removing bubble4
+    if(svthPerc >= 6.75) svthSVG4Group.style.opacity = `${1 - ((svthPerc - 6.75) * 15)}`;
+    if(parseInt(svthSVG4Group.style.opacity) < 0) svthSVG4Group.style.opacity = 0;
+    if(svthPerc < 6.75) svthSVG4Group.style.opacity = `1`;
+
+    if(svthPerc >= 7.5) svthSVG5Gs[0].style.opacity = `${(svthPerc - 7.5) * 15}`;
+    if(svthPerc < 7.5) svthSVG5Gs[0].style.opacity = `0`;
+
+    if(svthPerc >= 7.55) svthSVG5Gs[1].style.opacity = `${(svthPerc - 7.55) * 15}`;
+    if(svthPerc < 7.55) svthSVG5Gs[1].style.opacity = `0`;
+
+    if(svthPerc >= 7.6) svthSVG5Gs[2].style.opacity = `${(svthPerc - 7.6) * 15}`;
+    if(svthPerc < 7.6) svthSVG5Gs[2].style.opacity = `0`;
+
+    svthSVG5Gs.forEach(svg =>{if(parseInt(svg.style.opacity) > 1) svg.style.opacity = 1});
+
+    if(svthPerc < 8) {
+      svthIMGUnblurLights.style.opacity = 0;
+      svthSVG1Group.style.display = `block`;
+      svthSVG2Group.style.display = `block`;
+      svthSVG3Group.style.display = `block`;
+      svthSVG4Group.style.display = `block`;
+
+      svthIMGUnblurLights.style.opacity = `0`;
+      svthIMGArenaUnblur.style.opacity = `0`;
+      svthCarB.style.opacity = `1`;
+      svthIMGBlurLights4.style.opacity = `1`;
+    }
+
+    if(svthPerc < 8.2){
+      svthSVG5Group.style.display = `block`;
+      svthCarIMGs.forEach(img => img.style.display = 'none');
+
+    }
+
+    if(svthPerc >= 8){
+      svthIMGUnblurLights.style.opacity = `${(svthPerc - 8) * 2}`;
+      svthIMGArenaUnblur.style.opacity = `${(svthPerc - 8) * 2}`;
+      svthCarB.style.opacity = `${1 - ((svthPerc - 8) * 5)}`;
+      svthIMGBlurLights4.style.opacity = `${1 - ((svthPerc - 8) * 2)}`;
+      // if(parseInt(svthIMGBlurLights4.style.opacity) <= 0) svthIMGBlurLights4.style.opacity = 0;
+      svthSVG1Group.style.display = `none`;
+      svthSVG2Group.style.display = `none`;
+      svthSVG3Group.style.display = `none`;
+      svthSVG4Group.style.display = `none`;
+      svthSVG5Group.style.opacity = `${1 - ((svthPerc - 8) * 5)}`;
+      svthCarIMGs[0].style.display = 'block';
+    }
+
+    if(svthPerc >= 8.2){
+      svthSVG5Group.style.display = `none`;
+      svthCarIMGs.forEach(img => img.style.display = 'none');
+      svthCarIMGs[Math.trunc((svthPerc - 8.2)* 24)].style.display = 'block';
+      svthIMGUnblurLights.style.translate = `${-300 - ((svthPerc - 8.2) * (svthPerc - 8.2) * 25)}% -50%`;
+      svthIMGArenaBlur.style.translate = `${-(svthPerc - 2) * 77.15 + ((svthPerc - 8.2) * 10)}% -55%`;
+
+    }
+
+
+    if(svthPerc > 8.4){
+      svthIMGCarDiv.style.scale = 1 + (svthPerc - 8.4) * (svthPerc - 8.4) * (svthPerc - 8.4) *  1.65 * 20;
+      svthIMGCarDiv.style.translate = `-25% ${-32 - ((svthPerc - 8.4) * (svthPerc - 8.4) * (svthPerc - 8.4) * 700)}%`;
+    }
+    
+    if(svthPerc <= 8.4){
+      svthIMGCarDiv.style.scale = 1;
+      svthIMGCarDiv.style.translate = `-25% -32%`;
+    }
+
+    if(svthPerc > 8.95){
+      svthPageWhite.style.opacity = (svthPerc - 8.95) * 20;
+    }
+    if(svthPerc >= 9){
+      svthPageWhite.style.opacity = 1;
+      window.scrollTo({top:0, behavior:"instant"});
+    }
+    if(svthPerc <= 8.95){
+      svthPageWhite.style.opacity = 0;
+    }
+
   }
 
-  if(observedSvthPageAdd){
 
-  }
 
 
   // ----------------------------
@@ -434,9 +646,7 @@ let seventhPage = document.querySelector('.seventh-page');
 
 
 
-let observedFP3 = false;
-let observedFP3Val = 0;
-let animRunning = false;
+
 
 
 let fp4Interval;
@@ -446,9 +656,7 @@ let fp4Interval3;
 let fp4BlurContainer = document.querySelector('.fp-4-blur-container');
 let fp4BlurOverlay = document.querySelector('.fp-4-blur-overlay');
   
-let observedFP4 = false;
-let observedFP4T0 = false;
-let observingFP4 = false;
+
 
 let fp1Writing = document.querySelector('.fp-img-1-writing');
 let fpIMG2Div = document.querySelector('.fp-img-2-div');
@@ -491,12 +699,82 @@ sCircles.forEach(circle =>{
 
 
 let scene7Writing = document.querySelector('.sthp-img-writing');
-let observedSvthPage = false;
-let cbArrow2 = document.querySelector('.CB-Arrow-2');
-let svthPageAdd = document.querySelector('.svth-page-add');
-let observedSvthPageAdd = false;
+let svthPageAdd1 = document.querySelector('.svth-add-1');
+let svthCarU = document.querySelector('.svth-img-car-unblur');
+let svthCarB = document.querySelector('.svth-img-car-blur');
+let svthContainer = document.querySelector('.svth-page-container');
+let svthBlurredIMG = document.querySelectorAll('.svth-blur');
+let svthUnblurredIMG = document.querySelectorAll('.svth-unblur');
+let svthIMGArenaBlur = document.querySelector('.svth-img-arena-blur');
+let svthIMGArenaUnblur = document.querySelector('.svth-img-arena');
+let svthIMGUnblurLights = document.querySelector('.svth-img-lights-unblur-1');
+let svthIMGBlurLights4 = document.querySelector('.svth-img-lights-blur-4');
+let svthIMGCarDiv = document.querySelector('.svth-img-car-div');
+let svthPageWhite = document.querySelector('.svth-page-white');
+
+for(let i = 0; i<=19; i++){
+  if(i < 10) svthIMGCarDiv.innerHTML +=`<img fetchpriority="high" src="scene8/uhhh000${i}-min.png" alt="" class="svth-car-div-img">`;
+  if(i >= 10) svthIMGCarDiv.innerHTML +=`<img fetchpriority="high" src="scene8/uhhh00${i}-min.png" alt="" class="svth-car-div-img">`;
+}
+
+let svthCarIMGs = document.querySelectorAll('.svth-car-div-img');
+// console.log(svthCarIMGs[1]);
+
+
+let svthSVG1Gs = [];
+for(let i = 1; i<=4; i++){
+  let svthSVGElem = document.querySelector(`.svth-svg-1-g-${i}`);
+  svthSVG1Gs.push(svthSVGElem);
+}
+let svthSVG1Group = document.querySelector('.svth-svg-1-g');
+
+let svthSVG2Gs = [];
+for(let i = 1; i<=4; i++){
+  let svthSVGElem = document.querySelector(`.svth-svg-2-g-${i}`);
+  svthSVG2Gs.push(svthSVGElem);
+}
+let svthSVG2Group = document.querySelector('.svth-svg-2-g');
+
+let svthSVG3Gs = [];
+for(let i = 1; i<=4; i++){
+  let svthSVGElem = document.querySelector(`.svth-svg-3-g-${i}`);
+  svthSVG3Gs.push(svthSVGElem);
+}
+let svthSVG3Group = document.querySelector('.svth-svg-3-g');
+
+let svthSVG4Gs = [];
+for(let i = 1; i<=4; i++){
+  let svthSVGElem = document.querySelector(`.svth-svg-4-g-${i}`);
+  svthSVG4Gs.push(svthSVGElem);
+}
+let svthSVG4Group = document.querySelector('.svth-svg-4-g');
+
+let svthSVG5Gs = [];
+for(let i = 1; i<=3; i++){
+  let svthSVGElem = document.querySelector(`.svth-svg-5-g-${i}`);
+  svthSVG5Gs.push(svthSVGElem);
+}
+let svthSVG5Group = document.querySelector('.svth-svg-5-g');
+
+
 
 // ---- Observes ----
+
+let observedFP3 = false;
+let observedFP3Val = 0;
+let animRunning = false;
+
+let observedFP4 = false;
+let observedFP4T0 = false;
+let observingFP4 = false;
+
+let observedFFP = false;
+
+let observedSthPage = false;
+let observedSthPAdd = false;
+
+let observedSvthPage = false;
+let observedSvthPAdd1 = false;
 
 let fp1Observe = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting){
@@ -554,9 +832,6 @@ let fp4Observe = new IntersectionObserver(entries =>{
   }
 }, {threshold: 0.2});
 
-let observedFFP = false;
-let observedSthPage = false;
-let observedSthPAdd = false;
 
 let ffpPageObserve = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting) observedFFP = true;
@@ -600,8 +875,10 @@ let sthPageObserve = new IntersectionObserver(entries => {
 
 let sthPageAddObserve = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting){
-    sthpTrack.style.position = `fixed`;
-    sthpTrack.style.top = `50vh`;
+    if(!observedSvthPage){
+      sthpTrack.style.position = `fixed`;
+      sthpTrack.style.top = `50vh`;
+    }
 
     observedSthPAdd = true;
     // console.log(sthpPathLength);
@@ -618,12 +895,12 @@ let sthPageAddObserve = new IntersectionObserver(entries =>{
 
 let svthPageObserve = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting){
-    svthPageObserve = true;
+    observedSvthPage = true;
     sthpTrack.style.position = `absolute`;
     sthpTrack.style.top = `calc(100% - 50vh)`;
   }
   else if(!entries[0].isIntersecting){
-    svthPageObserve = false;
+    observedSvthPage = false;
   }
   
   if(!entries[0].isIntersecting && observedSthPAdd){
@@ -633,26 +910,20 @@ let svthPageObserve = new IntersectionObserver(entries =>{
     
 })
 
-let svthPageAddObserve = new IntersectionObserver(entries =>{
+let svthPageAdd1Observe = new IntersectionObserver(entries =>{
   if(entries[0].isIntersecting){
-    // console.log("KAMON MEN");
-    observedSvthPageAdd = true;
-    
-    // window.location.hash = 'first-page';
-    // window.history.pushState(null, null, '');
-    
-    // firstPage.scrollIntoView({ behavior: 'smooth' });
-    // firstPage.scrollIntoView({ behavior: 'smooth' });
-    // window.location.hash = 'first-page';
-    // document.querySelector(window.location.hash).scrollIntoView({ behavior: 'smooth' });
-    window.scrollTo({top: 0, behavior: 'smooth' });
-    
+    observedSvthPAdd1 = true;
+    svthContainer.style.position = `fixed`;
+    svthContainer.style.top = `50vh`;
+    }
+    else if(!entries[0].isIntersecting && !observedSvthPage){
+      observedSvthPAdd1 = false;
+      svthContainer.style.position = `absolute`;
+      // svthCar.style.position = `absolute`;
   }
-  else if(!entries[0].isIntersecting){
-    observedSvthPageAdd = false;
-    // window.scrollTo({top: 0, behavior: 'smooth' });
-  }
+
 })
+
 
 
 fp1Observe.observe(fp1Writing);
@@ -665,7 +936,8 @@ ffpPageObserve.observe(ffpPage);
 sthPageObserve.observe(sixthPage);
 sthPageAddObserve.observe(sthPageAdd);
 svthPageObserve.observe(seventhPage);
-svthPageAddObserve.observe(svthPageAdd);
+svthPageAdd1Observe.observe(svthPageAdd1);
+// svthPageAddObserve.observe(svthPageAdd);
 
 
 
